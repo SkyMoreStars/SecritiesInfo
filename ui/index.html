@@ -16,8 +16,21 @@
             $("#main").css("height",height+"px");
 
             var myChart=echarts.init(document.getElementById("main"),'dark');
-            var data=["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子","T恤"];
-            var numbers=[5, 20, 36, 10, 10, 20,40];
+
+            var test=["9:30","9:31","9:32","9:33","9:34","9:35","9:36","9:37","9:38"];
+            var numbers=[3241.93,3233.78, 3251.89, 3250.31,3249.10,3252.83,3251.74, 3246.76, 3242.04];
+            var max =0;
+            var sum =0;
+            var min =0;
+            for(var i=0;i<numbers.length;i++){
+                sum+=numbers[i];
+                if(max<numbers[i]){
+                    max=numbers[i];
+                }else {
+                    min=numbers[i];
+                }
+            }
+
             var option={
                 title:{
                     text:'深证指数'
@@ -26,7 +39,7 @@
                     trigger: 'axis'
                 },
                 legend:{
-                    data:['销量']
+                    data:['指数']
                 },
                 toolbox: {
                     show: true,
@@ -41,13 +54,33 @@
                     }
                 },
                 xAxis: {
-                    data:data
+                    type: 'category',
+                    boundaryGap: false,
+                    axisLine:{
+                        lineStyle:{
+                            color: 'red',
+                            width: 2
+                        }
+                    }
+
                 },
-                yAxis: {},
+                yAxis:[
+                    {
+                        min:numbers[0],
+                        max:max,
+                        interval:1
+                    },
+                    {
+                        min:0,
+                        max:max,
+                        interval:0.01
+                    },
+
+                ] ,
                 series: [{
-                    name: '销量',
-                    type: 'bar',
-                    data: numbers
+                    name: '',
+                    type: 'line',
+                    data: test
                 }]
             }
             myChart.setOption(option);
