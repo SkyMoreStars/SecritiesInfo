@@ -39,21 +39,21 @@
                 series: [{
                     name: '指数',
                     type: 'line',
-                    data: []
-                }]
+            data: []
+        }]
+        }
+        myChart.setOption(option);
+        function test() {
+            type.push(Math.round(Math.random()*10000));
+            number.push(Math.round(Math.random()*10000))
+            if(!myChart){
+                return
             }
+            var option=myChart.getOption();
+            option.series[0].data=number;
+            option.xAxis.data=type;
             myChart.setOption(option);
-            function test() {
-                type.push(Math.round(Math.random()*10000));
-                number.push(Math.round(Math.random()*10000))
-                if(!myChart){
-                    return
-                }
-                var option=myChart.getOption();
-                option.series[0].data=number;
-                option.xAxis.data=type;
-                myChart.setOption(option);
-            }
+        }
         })
 
 
