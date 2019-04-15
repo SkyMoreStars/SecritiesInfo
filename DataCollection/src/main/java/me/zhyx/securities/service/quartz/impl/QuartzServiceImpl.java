@@ -16,7 +16,7 @@ import java.util.List;
 @Transactional
 public class QuartzServiceImpl implements QuartzService {
     @Autowired
-    private Scheduler  schedule;
+    private Scheduler scheduler;
 
     @Autowired
     private ScheduleJobService scheduleJobService;
@@ -24,7 +24,7 @@ public class QuartzServiceImpl implements QuartzService {
     @Override
     public void timingTask() {
         //查询数据库是否存在需要定时的任务
-        List<ScheduleJob> scheduleJobs = scheduleJobService.list();
+        List<ScheduleJob> scheduleJobs = scheduleJobService.taskList();
         if (null != scheduleJobs) {
             scheduleJobs.forEach(this::addJob);
         }
@@ -35,20 +35,20 @@ public class QuartzServiceImpl implements QuartzService {
         try {
             Trigger trigger = TriggerBuilder
                     .newTrigger()
-                    .withIdentity(job.getMehtodName())
+                    .withIdentity(job.getMethodName())
                     .withSchedule(CronScheduleBuilder.cronSchedule(job.getCronExpression()))
                     .startNow()
                     .build();
             //创建任务
             JobDetail jobDetail = JobBuilder.newJob(QuartzFactory.class)
-                    .withIdentity(job.getMehtodName())
+                    .withIdentity(job.getMethodName())
                     .build();
             /**
              * 传入调度数据，在QuartzFactory中需要使用到
              */
             jobDetail.getJobDataMap().put("scheduleJob", job);
             //调度作业
-            schedule.scheduleJob(jobDetail, trigger);
+            scheduler.scheduleJob(jobDetail, trigger);
 
         } catch (SchedulerException e) {
             throw new RuntimeException(e);
@@ -58,22 +58,22 @@ public class QuartzServiceImpl implements QuartzService {
     @Override
     public void operateJob(JobOperateEnum jobOperateEnum, ScheduleJob scheduleJob) throws SchedulerException {
         JobKey jobKey = new JobKey(scheduleJob.getJobName());
-        JobDetail jobDetail= schedule.getJobDetail(jobKey);
+        JobDetail jobDetail= scheduler.getJobDetail(jobKey);
         if(null==jobDetail){
             //异常
             throw new RuntimeException();
         }
         switch (jobOperateEnum){
             case PAUSE:{
-                schedule.pauseJob(jobKey);
+                scheduler.pauseJob(jobKey);
                 break;
             }
             case START:{
-                schedule.resumeJob(jobKey);
+                scheduler.resumeJob(jobKey);
                 break;
             }
             case DELETE:{
-                schedule.deleteJob(jobKey);
+                scheduler.deleteJob(jobKey);
             }
         }
 
@@ -82,11 +82,11 @@ public class QuartzServiceImpl implements QuartzService {
 
     @Override
     public void startAllJob() throws SchedulerException {
-        schedule.start();
+        scheduler.start();
     }
 
     @Override
     public void pauseALlJob() throws SchedulerException {
-        schedule.pauseAll();
+        scheduler.pauseAll();
     }
 }

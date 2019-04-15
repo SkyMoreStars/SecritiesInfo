@@ -24,7 +24,7 @@ public class ScheduleJob implements Serializable {
     /**
      * 方法名称
      */
-    private String mehtodName;
+    private String methodName;
     /**
      * 状态 1.启动，2.暂停
      */

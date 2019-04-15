@@ -16,7 +16,7 @@ public class QuartzFactory implements Job {
         //获取对应的bean
         Object bean = SpringUtil.getBean(schedulejob.getBeanName());
         try {
-            Method method = bean.getClass().getMethod(schedulejob.getMehtodName());
+            Method method = bean.getClass().getMethod(schedulejob.getMethodName());
             method.invoke(bean);
         }catch (Exception e){
             e.printStackTrace();
