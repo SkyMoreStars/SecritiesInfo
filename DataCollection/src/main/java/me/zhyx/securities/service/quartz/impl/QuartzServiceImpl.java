@@ -1,0 +1,92 @@
+package me.zhyx.securities.service.quartz.impl;
+
+import me.zhyx.securities.common.enums.JobOperateEnum;
+import me.zhyx.securities.common.model.ScheduleJob;
+import me.zhyx.securities.factory.QuartzFactory;
+import me.zhyx.securities.service.quartz.QuartzService;
+import me.zhyx.securities.dao.ScheduleJobService;
+import org.quartz.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class QuartzServiceImpl implements QuartzService {
+    @Autowired
+    private Scheduler  schedule;
+
+    @Autowired
+    private ScheduleJobService scheduleJobService;
+
+    @Override
+    public void timingTask() {
+        //查询数据库是否存在需要定时的任务
+        List<ScheduleJob> scheduleJobs = scheduleJobService.list();
+        if (null != scheduleJobs) {
+            scheduleJobs.forEach(this::addJob);
+        }
+    }
+
+    @Override
+    public void addJob(ScheduleJob job) {
+        try {
+            Trigger trigger = TriggerBuilder
+                    .newTrigger()
+                    .withIdentity(job.getMehtodName())
+                    .withSchedule(CronScheduleBuilder.cronSchedule(job.getCronExpression()))
+                    .startNow()
+                    .build();
+            //创建任务
+            JobDetail jobDetail = JobBuilder.newJob(QuartzFactory.class)
+                    .withIdentity(job.getMehtodName())
+                    .build();
+            /**
+             * 传入调度数据，在QuartzFactory中需要使用到
+             */
+            jobDetail.getJobDataMap().put("scheduleJob", job);
+            //调度作业
+            schedule.scheduleJob(jobDetail, trigger);
+
+        } catch (SchedulerException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void operateJob(JobOperateEnum jobOperateEnum, ScheduleJob scheduleJob) throws SchedulerException {
+        JobKey jobKey = new JobKey(scheduleJob.getJobName());
+        JobDetail jobDetail= schedule.getJobDetail(jobKey);
+        if(null==jobDetail){
+            //异常
+            throw new RuntimeException();
+        }
+        switch (jobOperateEnum){
+            case PAUSE:{
+                schedule.pauseJob(jobKey);
+                break;
+            }
+            case START:{
+                schedule.resumeJob(jobKey);
+                break;
+            }
+            case DELETE:{
+                schedule.deleteJob(jobKey);
+            }
+        }
+
+
+    }
+
+    @Override
+    public void startAllJob() throws SchedulerException {
+        schedule.start();
+    }
+
+    @Override
+    public void pauseALlJob() throws SchedulerException {
+        schedule.pauseAll();
+    }
+}

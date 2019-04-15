@@ -39,3 +39,5 @@ spring:
       instance-id: NON_CLUSTERED # 使用集群：AUTO 不使用集群：NON_CLUSTERED
 swagger:
   enable: true
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
