@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * @author yssq
+ */
 @Service
 @Transactional
 public class QuartzServiceImpl implements QuartzService {
@@ -35,13 +38,13 @@ public class QuartzServiceImpl implements QuartzService {
         try {
             Trigger trigger = TriggerBuilder
                     .newTrigger()
-                    .withIdentity(job.getMethodName())
+                    .withIdentity(job.getJobName())
                     .withSchedule(CronScheduleBuilder.cronSchedule(job.getCronExpression()))
                     .startNow()
                     .build();
             //创建任务
             JobDetail jobDetail = JobBuilder.newJob(QuartzFactory.class)
-                    .withIdentity(job.getMethodName())
+                    .withIdentity(job.getJobName())
                     .build();
             /**
              * 传入调度数据，在QuartzFactory中需要使用到

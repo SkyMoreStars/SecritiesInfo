@@ -12,7 +12,7 @@ public class QuartzFactory implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         //获取调度数据
-        ScheduleJob  schedulejob = (ScheduleJob) jobExecutionContext.getMergedJobDataMap().get("schedulejob");
+        ScheduleJob  schedulejob = (ScheduleJob) jobExecutionContext.getMergedJobDataMap().get("scheduleJob");
         //获取对应的bean
         Object bean = SpringUtil.getBean(schedulejob.getBeanName());
         try {
