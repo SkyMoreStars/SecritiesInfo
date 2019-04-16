@@ -1,6 +1,5 @@
 package me.zhyx.securities.common.enums;
 
-import java.io.Serializable;
 
 public enum JobOperateEnum {
     START(1, "启动"),
@@ -15,7 +14,7 @@ public enum JobOperateEnum {
         this.desc = desc;
     }
 
-    public Serializable getValue() {
+    public int getValue() {
         return this.value;
     }
 

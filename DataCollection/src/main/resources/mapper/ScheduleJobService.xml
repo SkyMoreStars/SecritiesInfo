@@ -2,20 +2,58 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="me.zhyx.securities.dao.ScheduleJobService">
+<mapper namespace="me.zhyx.securities.dao.ScheduleJobDao">
+    <update id="updateJob" parameterType="me.zhyx.securities.common.model.ScheduleJob">
+
+        update schedule_job
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="job.jobName!=null">job_name = #{job.jobName},</if>
+            <if test="job.cronExpression!=null">cron_expression =#{job.cronExpression},</if>
+            <if test="job.beanName!=null">bean_name=#{job.beanName},</if>
+            <if test="job.methodName!=null">method_name =#{job.methodName},</if>
+            <if test="job.status!=null">status =#{job.status},</if>
+            <if test="job.deleteFlag!=null">delete_flag =#{job.deleteFlag},</if>
+            <if test="job.createId!=null">creator_id = #{job.createId},</if>
+            <if test="job.createName!=null">creator_name =#{job.createName},</if>
+            <if test="job.createTime!=null">created_time =#{job.createTime},</if>
+            <if test="job.updateTime!=null">updated_time= #{job.updateTime},</if>
+        </trim>
+        <if test="job.id!=null">
+            where id=#{job.id}
+        </if>
+    </update>
+
     <select id="taskList" resultType="me.zhyx.securities.common.model.ScheduleJob">
         select
-          a.id,
-          a.job_name as jobName,
-          a.cron_expression as cronExpression,
-          a.bean_name as beanName,
-          a.method_name as methodName,
-          a.status as status,
-          a.delete_flag as deleteFlag,
-          a.creator_id as createId,
-          a.creator_name as createName,
-          a.created_time as createTime,
-          a.updated_time as updateTime
-        from schedule_job a where a.delete_flag=0
+          id as id,
+          job_name as jobName,
+          cron_expression as cronExpression,
+          bean_name as beanName,
+          method_name as methodName,
+          status as status,
+          delete_flag as deleteFlag,
+          creator_id as createId,
+          creator_name as createName,
+          created_time as createTime,
+          updated_time as updateTime
+        from schedule_job
+        where delete_flag=0
+    </select>
+
+    <select id="selectOne" resultType="me.zhyx.securities.common.model.ScheduleJob" parameterType="integer">
+        select
+          id as id,
+          job_name as jobName,
+          cron_expression as cronExpression,
+          bean_name as beanName,
+          method_name as methodName,
+          status as status,
+          delete_flag as deleteFlag,
+          creator_id as createId,
+          creator_name as createName,
+          created_time as createTime,
+          updated_time as updateTime
+        from schedule_job
+        where id=#{id}
     </select>
 </mapper>

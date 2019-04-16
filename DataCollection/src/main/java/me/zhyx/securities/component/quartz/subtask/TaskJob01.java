@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component("testJob01")
+@Component("taskJob01")
 @Transactional
 @Slf4j
 public class TaskJob01 {
