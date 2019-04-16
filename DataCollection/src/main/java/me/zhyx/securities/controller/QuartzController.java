@@ -28,8 +28,8 @@ public class QuartzController {
     QuartzService quartzService;
     @ApiOperation(httpMethod = "POST",tags = "定时器",produces = MediaType.APPLICATION_JSON_VALUE,value = "增加已编程的定时器")
     @PostMapping(value = "/add/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseModel add(@PathVariable("id") Integer id) {
-        quartzService.add(id);
+    public ResponseModel add(@PathVariable("id") Integer id,ScheduleJob job) {
+        quartzService.add(id,job);
         return ResultUtil.success();
     }
     @ApiOperation(httpMethod = "PUT",tags = "定时器",produces = MediaType.APPLICATION_JSON_VALUE,value = "根据id启动定时器")

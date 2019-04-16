@@ -7,6 +7,7 @@ import me.zhyx.securities.factory.QuartzFactory;
 import me.zhyx.securities.service.quartz.QuartzService;
 import me.zhyx.securities.dao.ScheduleJobDao;
 import org.quartz.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,8 +99,9 @@ public class QuartzServiceImpl implements QuartzService {
         }
     }
     @Override
-    public void add(int id) {
+    public void add(int id, ScheduleJob job) {
         ScheduleJob scheduleJob = findOneScheduleJob(id);
+        BeanUtils.copyProperties(job,scheduleJob);
         if(scheduleJob!=null){
             scheduleJob.setDeleteFlag(false);
             scheduleJobDao.updateJob(scheduleJob);

@@ -7,7 +7,7 @@ import org.quartz.SchedulerException;
 public interface QuartzService{
     void timingTask();
     void operateJob(JobOperateEnum jobOperateEnum, ScheduleJob scheduleJob) throws SchedulerException;
-    void add(int id);
+    void add(int id, ScheduleJob job);
     void start(int id);
     void pause(int id);
     void delete(int id);
