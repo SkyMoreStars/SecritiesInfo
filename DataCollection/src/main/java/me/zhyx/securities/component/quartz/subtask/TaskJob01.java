@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Slf4j
 public class TaskJob01 {
-    public void execute(){
+    public synchronized void execute(){
         log.info("TaskJob01---->开始执行");
         log.info("do some thing");
         log.info("TaskJob01---->执行结束");

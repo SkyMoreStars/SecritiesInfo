@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import me.zhyx.securities.common.enums.ResultEnum;
 import me.zhyx.securities.common.model.ResponseModel;
 import me.zhyx.securities.common.utils.ResultUtil;
-import me.zhyx.securities.dao.Test;
 import me.zhyx.securities.websocket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,8 +24,6 @@ import java.io.IOException;
 @RequestMapping("/ws")
 public class WebSocketController {
 
-    @Autowired
-    Test test;
 
     /**
      * 推送数据
@@ -46,9 +43,5 @@ public class WebSocketController {
         }
         return ResultUtil.success();
     }
-    @GetMapping(value = "/test")
-    public ResponseModel test(){
-        return ResultUtil.success(test.test());
 
-    }
 }
