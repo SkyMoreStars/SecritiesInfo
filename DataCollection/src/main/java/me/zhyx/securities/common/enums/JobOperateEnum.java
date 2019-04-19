@@ -18,7 +18,7 @@ public enum JobOperateEnum {
         return this.value;
     }
 
-    // Jackson 注解为 JsonValue 返回中文 json 描述
+    // Jackson 注解为 返回中文 json 描述
     public String getDesc() {
         return this.desc;
     }
