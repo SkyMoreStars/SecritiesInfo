@@ -8,7 +8,8 @@ import me.zhyx.securities.common.model.WebPage;
  * @Date: 2019/4/19 14:23
  * @Description:
  */
-public interface ICrawler {
+public interface ICrawler{
     WebPage getPage();
     void parsePage(WebPage webPage);
+
 }

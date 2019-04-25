@@ -2,6 +2,7 @@ package me.zhyx.securities.component.job;
 
 import lombok.extern.slf4j.Slf4j;
 import me.zhyx.securities.common.enums.HttpMethod;
+import me.zhyx.securities.common.model.Stock;
 import me.zhyx.securities.common.model.WebPage;
 import me.zhyx.securities.common.utils.HttpClientUtils;
 import org.jsoup.Jsoup;
@@ -9,6 +10,7 @@ import org.jsoup.Jsoup;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * @author zhyx
@@ -16,7 +18,8 @@ import java.util.Map;
  * @Description:
  */
 @Slf4j
-public abstract class AbstractCrawler implements ICrawler, Runnable {
+public abstract class AbstractCrawler<T> implements ICrawler, Runnable {
+    protected ConcurrentLinkedQueue<T> concurrentLinkedQueue;
     protected String pageUrl;
     protected WebPage webPage;
     protected HttpMethod httpMethod = HttpMethod.GET;
@@ -29,6 +32,11 @@ public abstract class AbstractCrawler implements ICrawler, Runnable {
         put("Redis-Control", "max-age=0");
         put("Upgrade-Insecure-Requests", "1");
     }};
+
+    public AbstractCrawler(String pageUrl, ConcurrentLinkedQueue<T> concurrentLinkedQueue) {
+        this.concurrentLinkedQueue=concurrentLinkedQueue;
+        this.pageUrl=pageUrl;
+    }
 
     @Override
     public void run() {

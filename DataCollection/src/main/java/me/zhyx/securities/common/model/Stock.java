@@ -9,11 +9,12 @@ import java.util.Date;
  * 当前实时股价
  */
 @Data
-public class StockChange implements Serializable {
+public class Stock implements Serializable {
     private String currentPrice;
     private String changeVal;
     private String changePercent;
-    private Date currentTime;
-    private Date date;
-
+    private String currentTime;
+    private String date;
+    private String stockName;
+    private String code;
 }
