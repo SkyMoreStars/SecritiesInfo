@@ -37,6 +37,10 @@ spring:
     scheduler:
       instance-name: MyselfScheduler
       instance-id: NON_CLUSTERED # 使用集群：AUTO 不使用集群：NON_CLUSTERED
+  redis:
+    host: localhost
+    password:
+    port: 6379
 swagger:
   enable: true
 mybatis:

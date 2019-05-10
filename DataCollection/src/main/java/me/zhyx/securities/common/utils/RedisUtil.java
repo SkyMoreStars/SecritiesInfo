@@ -24,7 +24,7 @@ public class RedisUtil {
         }
         if(o instanceof Stock){
             Stock stock= (Stock) o;
-            redisTemplate.opsForList().leftPush(stock.getCode()+CrawlerType.STOCK.name(),stock);
+            redisTemplate.opsForList().leftPush(CrawlerType.STOCK.name()+stock.getCode(),stock);
             return true;
         }
         return false;
@@ -36,5 +36,9 @@ public class RedisUtil {
     public Object getObject(String key, CrawlerType crawlerType){
         Object o = redisTemplate.opsForList().rightPop(key+crawlerType.name());
         return o;
+    }
+    public List<Object> getObjects(String stockCode,CrawlerType crawlerType){
+        List<Object> range = redisTemplate.opsForList().range(CrawlerType.STOCK.name()+stockCode, 0, -1);
+        return range;
     }
 }
