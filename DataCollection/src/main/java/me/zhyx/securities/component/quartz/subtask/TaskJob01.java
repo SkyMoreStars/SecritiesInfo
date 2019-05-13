@@ -12,7 +12,7 @@ public class TaskJob01 {
     public synchronized void execute(){
         log.info("TaskJob01---->开始执行");
         log.info("do some thing");
-        new CrawlerJob();
+
         log.info("TaskJob01---->执行结束");
     }
 }
