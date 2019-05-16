@@ -6,13 +6,10 @@ import me.zhyx.securities.common.model.ResponseModel;
 import me.zhyx.securities.common.model.ScheduleJob;
 import me.zhyx.securities.common.utils.ResultUtil;
 import me.zhyx.securities.service.quartz.QuartzService;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.xml.transform.Result;
 
 
 /**

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.zhyx.securities.dao.CollectTaskDao">
+
+    <select id="findAll" resultType="me.zhyx.securities.common.model.CollectTask">
+        select
+            id as id,
+            main_code as mainCode,
+            isdelete as isDelete,
+            collect_type as collectType
+        from
+          collect_task
+    </select>
+
+
+</mapper>

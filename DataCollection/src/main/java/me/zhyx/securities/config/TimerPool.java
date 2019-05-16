@@ -1,6 +1,7 @@
-package me.zhyx.securities.component.job;
+package me.zhyx.securities.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +12,10 @@ import java.util.concurrent.*;
  * @date 2019/5/13
  *
  */
-@Component
+@Configuration
 public class TimerPool {
 
     @Bean
-    @Scope
     public ScheduledExecutorService scheduledExecutorService(){
         ScheduledExecutorService service = Executors.newScheduledThreadPool(1000);
         return service;

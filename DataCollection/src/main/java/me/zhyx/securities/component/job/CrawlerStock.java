@@ -3,6 +3,7 @@ package me.zhyx.securities.component.job;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyx.securities.common.model.Stock;
 import me.zhyx.securities.common.model.WebPage;
+import me.zhyx.securities.config.ThreadTaskPool;
 import org.jsoup.nodes.Document;
 
 import java.time.LocalDate;
@@ -13,8 +14,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Slf4j
 public class CrawlerStock extends AbstractCrawler {
-    public CrawlerStock(String pageUrl, ConcurrentLinkedQueue<Stock> concurrentLinkedQueue) {
-        super(pageUrl,concurrentLinkedQueue);
+    public CrawlerStock(String pageUrl,String jobId) {
+        super(pageUrl,jobId);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class CrawlerStock extends AbstractCrawler {
             stock.setStockName(name);
             stock.setCode(code);
             stock.setDate(date);
-            concurrentLinkedQueue.offer(stock);
+            ThreadTaskPool.concurrentLinkedQueue.offer(stock);
             log.info("end parse page!");
         } catch (Exception e) {
             log.error("parse page exception {}", e.getMessage());
