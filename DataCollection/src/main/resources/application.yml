@@ -41,7 +41,12 @@ spring:
     host: localhost
     password:
     port: 6379
+
 swagger:
   enable: true
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+
+securities:
+  stock-url: http://quote.eastmoney.com/sh{%s}.html

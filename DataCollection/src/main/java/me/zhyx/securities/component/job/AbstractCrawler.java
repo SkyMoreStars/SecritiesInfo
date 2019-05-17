@@ -33,6 +33,7 @@ public abstract class AbstractCrawler implements ICrawler, Runnable {
 
     public AbstractCrawler(String pageUrl,String jobId) {
         this.jobId=jobId;
+        pageUrl=String.format(pageUrl,jobId);
         this.pageUrl=pageUrl;
     }
 

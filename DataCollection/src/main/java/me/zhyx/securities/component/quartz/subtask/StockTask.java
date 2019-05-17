@@ -10,6 +10,7 @@ import me.zhyx.securities.component.job.CrawlerStock;
 import me.zhyx.securities.config.ThreadTaskPool;
 import me.zhyx.securities.dao.CollectTaskDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,30 +26,47 @@ import java.util.concurrent.*;
 @Component("taskJob01")
 @Transactional
 @Slf4j
-public class TaskJob01 {
+public class StockTask {
 
     @Autowired
     ScheduledExecutorService scheduledExecutorService;
+    @Value("${securities.stock-url}")
+    private String stockUrl;
 
     @Autowired
     CollectTaskDao collectTaskDao;
+
     @Autowired
     RedisUtil redisUtil;
     public synchronized void execute() {
-        log.info("加载所有需要采集的证券");
+        log.info("Load all securities info.");
         refreshTaskStatus();
+        log.info("Refresh task thread pool ！");
         refreshTaskThreadPool();
-        CrawlerStock crawlerStock  = new CrawlerStock("", stockCode);
-        Future future = scheduledExecutorService.scheduleAtFixedRate(crawlerStock, 1, 1, TimeUnit.SECONDS);
-        ThreadTaskPool.futureMap.put(stockCode,future);
-        log.info("TaskJob01---->执行结束");
+        log.info("StockTask---->执行结束");
     }
 
     private void refreshTaskThreadPool() {
-        ThreadTaskPool.runningTask
+        for (Map.Entry<String, Object> runningTask : ThreadTaskPool.runningTask.entrySet()) {
+            if(!ThreadTaskPool.futureMap.contains(runningTask.getKey())){
+                String stockCode=runningTask.getKey();
+                CrawlerStock crawlerStock  = new CrawlerStock(stockUrl, stockCode);
+                Future future = scheduledExecutorService.scheduleAtFixedRate(crawlerStock, 1, 1, TimeUnit.SECONDS);
+                ThreadTaskPool.futureMap.put(stockCode,future);
+            }
+        }
+        for (Map.Entry<String, Object> stopTask : ThreadTaskPool.stopTask.entrySet()) {
+            if(ThreadTaskPool.futureMap.contains(stopTask.getKey())){
+                Future future = ThreadTaskPool.futureMap.get(stopTask.getKey());
+                future.cancel(true);
+                ThreadTaskPool.futureMap.remove(stopTask.getKey());
+            }
+        }
     }
 
     private void refreshTaskStatus() {
+        ThreadTaskPool.runningTask.clear();
+        ThreadTaskPool.stopTask.clear();
         List<CollectTask> collectTaskList= collectTaskDao.findAll();
         for (CollectTask collectTask : collectTaskList) {
             if(collectTask.getIsDelete().equals( SyStemParam.RUNNING.getCode())){

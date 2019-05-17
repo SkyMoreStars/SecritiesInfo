@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class CrawlerStock extends AbstractCrawler {
     public CrawlerStock(String pageUrl,String jobId) {
         super(pageUrl,jobId);
+
     }
 
     @Override
