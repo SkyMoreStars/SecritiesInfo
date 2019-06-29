@@ -6,12 +6,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * @auther zhyx
+ * @author cattom
  * @Date 2019/5/16 15:50
  * @Description
  */
 @Repository
 public interface CollectTaskDao {
+
     List<CollectTask> findAll();
 
 }

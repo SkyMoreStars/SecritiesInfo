@@ -24,7 +24,7 @@ import java.util.concurrent.*;
  *
  */
 @Component("taskJob01")
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class StockTask {
 

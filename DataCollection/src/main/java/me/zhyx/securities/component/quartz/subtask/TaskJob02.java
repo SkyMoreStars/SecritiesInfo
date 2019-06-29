@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component("taskJob02")
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class TaskJob02 {
     public void execute(){
